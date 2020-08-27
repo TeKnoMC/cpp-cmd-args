@@ -137,6 +137,20 @@ std::map<std::string, std::string> Command::Parse(int argc, char* userArgsArr[])
 void ArgumentsParser::usage(std::string errMsg)
 {
     std::cout << "error: " << errMsg << std::endl;
+    std::cout << "Usage: " << std::endl << "python lsb.py [command] <arguments>" << std::endl;
+
+    /*
+        print("Usage:")
+        print("python lsb.py [command] <arguments>\n")
+
+        print("Available commands:")
+
+        for command in self.commands:
+            print(command.name)
+            for arg in command.arguments:
+                print("\t{:<20} {:<}".format(f"{arg['short']}/{arg['long']}", arg["description"]))
+    */
+
     std::exit(1);
 }
 
@@ -149,7 +163,7 @@ std::tuple<std::string, std::map<std::string, std::string>> ArgumentsParser::Par
 {
     if (argc == 1)
     {
-        usage("Missing arguments");
+        usage("Missing a command");
     }
 
     std::string name;
