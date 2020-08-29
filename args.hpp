@@ -15,11 +15,9 @@ struct Argument
 
 class Command
 {
-    private:
-        std::vector<Argument> arguments;
-
     public:
         std::string Name;
+        std::vector<Argument> arguments;
 
         Command(std::string name);
         void AddArgument(std::string shortName, std::string longName, std::string defaultValue, std::string description);
@@ -32,7 +30,7 @@ class ArgumentsParser
     private:
         std::vector<Command> commands;
 
-        void usage(std::string errMsg);
+        void usage(std::string errMsg, std::string progName);
 
     public:
         void AddCommand(Command cmd);

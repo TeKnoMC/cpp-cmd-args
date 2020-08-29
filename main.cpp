@@ -7,7 +7,7 @@
 int main(int argc, char* argv[])
 {
     Command cmd = Command("test");
-    cmd.AddArgument("-t", "--test", "", "A test parameter");
+    cmd.AddArgument("-t", "--test", "def", "A test parameter");
 
     ArgumentsParser parser = ArgumentsParser();
     parser.AddCommand(cmd);

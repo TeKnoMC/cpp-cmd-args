@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <map>
@@ -134,22 +135,20 @@ std::map<std::string, std::string> Command::Parse(int argc, char* userArgsArr[])
 
 // ------------ ArgumentsParser object ------------
 
-void ArgumentsParser::usage(std::string errMsg)
+void ArgumentsParser::usage(std::string errMsg, std::string progName)
 {
-    std::cout << "error: " << errMsg << std::endl;
-    std::cout << "Usage: " << std::endl << "python lsb.py [command] <arguments>" << std::endl;
+    std::cout << "error: " << errMsg << std::endl << std::endl;
+    std::cout << "Usage: " << std::endl << progName << " [command] <arguments>" << std::endl << std::endl;
 
-    /*
-        print("Usage:")
-        print("python lsb.py [command] <arguments>\n")
-
-        print("Available commands:")
-
-        for command in self.commands:
-            print(command.name)
-            for arg in command.arguments:
-                print("\t{:<20} {:<}".format(f"{arg['short']}/{arg['long']}", arg["description"]))
-    */
+    std::cout << "Available commands:" << std::endl;
+    for (Command cmd : commands)
+    {
+        std::cout << cmd.Name << std::endl;
+        for (Argument arg : cmd.arguments)
+        {
+            std::cout << "\t" << std::setw(20) << std::left << arg.shortName + "/" + arg.longName << arg.description << std::endl;
+        }
+    }
 
     std::exit(1);
 }
@@ -161,9 +160,11 @@ void ArgumentsParser::AddCommand(Command cmd)
 
 std::tuple<std::string, std::map<std::string, std::string>> ArgumentsParser::ParseArguments(int argc, char* argv[])
 {
+    std::string progName {argv[0]};
+
     if (argc == 1)
     {
-        usage("Missing a command");
+        usage("Missing a command", progName);
     }
 
     std::string name;
@@ -181,7 +182,7 @@ std::tuple<std::string, std::map<std::string, std::string>> ArgumentsParser::Par
             }
             catch(const ParsingException& e)
             {
-                usage(e.getMsg());
+                usage(e.getMsg(), progName);
             }
             
             isParsed = true;
@@ -193,7 +194,7 @@ std::tuple<std::string, std::map<std::string, std::string>> ArgumentsParser::Par
     {
         std::string msg {"Unknown command: "};
         msg.append(argv[1]);
-        usage(msg);
+        usage(msg, progName);
     }
 
     return {name, valueMap};
